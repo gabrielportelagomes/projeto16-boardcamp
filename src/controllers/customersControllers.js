@@ -1,10 +1,20 @@
 import connection from "../database/db.js";
 
 export async function getCustomers(req, res) {
-  try {
-    const { rows } = await connection.query(`SELECT * FROM customers;`);
+  const { cpf } = req.query;
 
-    res.send(rows);
+  try {
+    if (!cpf) {
+      const { rows } = await connection.query(`SELECT * FROM customers;`);
+
+      res.send(rows);
+    } else {
+      const { rows } = await connection.query(
+        `SELECT * FROM customers WHERE cpf ILIKE $1 || '%';`,
+        [cpf]
+      );
+      res.send(rows);
+    }
   } catch (err) {
     res.status(500).send(err.message);
   }
