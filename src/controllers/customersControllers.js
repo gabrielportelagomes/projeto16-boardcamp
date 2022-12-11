@@ -20,6 +20,25 @@ export async function getCustomers(req, res) {
   }
 }
 
+export async function getCustomer(req, res) {
+  const { id } = req.params;
+
+  try {
+    const { rows } = await connection.query(
+      `SELECT * FROM customers WHERE id=$1;`,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.sendStatus(404);
+    }
+
+    res.send(rows);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
 export async function postCustomer(req, res) {
   const { name, phone, cpf, birthday } = res.locals.customer;
 
