@@ -3,6 +3,7 @@ import {
   getCustomer,
   getCustomers,
   postCustomer,
+  putCustomer,
 } from "../controllers/customersControllers.js";
 import { customerSchemaValidation } from "../middlewares/customerSchemaValidation.js";
 import { customerValidation } from "../middlewares/customerValidation.js";
@@ -16,6 +17,12 @@ customersRouter.post(
   customerSchemaValidation,
   customerValidation,
   postCustomer
+);
+customersRouter.put(
+  "/customers/:id",
+  customerSchemaValidation,
+  customerValidation,
+  putCustomer
 );
 
 export default customersRouter;
