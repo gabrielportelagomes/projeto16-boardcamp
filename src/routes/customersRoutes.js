@@ -6,6 +6,7 @@ import {
   putCustomer,
 } from "../controllers/customersControllers.js";
 import { customerSchemaValidation } from "../middlewares/customerSchemaValidation.js";
+import { customerUpdateValidation } from "../middlewares/customerUpdateValidation.js";
 import { customerValidation } from "../middlewares/customerValidation.js";
 
 const customersRouter = Router();
@@ -21,7 +22,7 @@ customersRouter.post(
 customersRouter.put(
   "/customers/:id",
   customerSchemaValidation,
-  customerValidation,
+  customerUpdateValidation,
   putCustomer
 );
 
