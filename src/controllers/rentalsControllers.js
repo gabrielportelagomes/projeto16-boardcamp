@@ -8,7 +8,7 @@ export async function getRentals(req, res) {
   try {
     if (customerId || gameId) {
       const { rows } = await connection.query(
-        `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name As "categoryName" FROM rentals 
+        `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name AS "categoryName" FROM rentals 
           JOIN customers ON customers.id = "customerId" 
           JOIN games ON games.id = "gameId" 
           JOIN categories ON categories.id = games."categoryId" WHERE "customerId" = $1 OR "gameId" = $2
@@ -56,7 +56,7 @@ export async function getRentals(req, res) {
       res.send(rentals);
     } else {
       const { rows } = await connection.query(
-        `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name As "categoryName" FROM rentals 
+        `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name AS "categoryName" FROM rentals 
         JOIN customers ON customers.id = "customerId" 
         JOIN games ON games.id = "gameId" 
         JOIN categories ON categories.id = games."categoryId"
