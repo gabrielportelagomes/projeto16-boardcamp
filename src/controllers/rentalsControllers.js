@@ -141,7 +141,6 @@ export async function postRental(req, res) {
 export async function postRentalReturn(req, res) {
   const { id } = req.params;
   const returnDate = dayjs().format("YYYY-MM-DD");
-  let delayFee = 0;
 
   try {
     const { rows } = await connection.query(
@@ -152,6 +151,7 @@ export async function postRentalReturn(req, res) {
     const rentDate = dayjs(rows[0].rentDate).format("YYYY-MM-DD");
     const daysRented = rows[0].daysRented;
     const pricePerDay = rows[0].pricePerDay;
+    let delayFee = rows[0].delayFee;
     const maximumDate = dayjs(rentDate)
       .add(daysRented, "days")
       .format("YYYY-MM-DD");
