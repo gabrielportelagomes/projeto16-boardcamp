@@ -23,11 +23,13 @@ export async function rentalValidation(req, res, next) {
     }
 
     const { rowCount } = await connection.query(
-      `SELECT * FROM rentals WHERE id=$1`,
+      `SELECT * FROM rentals WHERE "gameId"=$1 AND "returnDate" IS NULL`,
       [gameId]
     );
 
-    if (rowCount > gameExists.rows[0].stockTotal) {
+    console.log(rowCount >= gameExists.rows[0].stockTotal)
+
+    if (rowCount >= gameExists.rows[0].stockTotal) {
       return res.status(400).send({ message: "Jogo fora de estoque!" });
     }
   } catch (err) {
