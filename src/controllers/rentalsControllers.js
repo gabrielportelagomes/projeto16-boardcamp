@@ -6,62 +6,14 @@ export async function getRentals(req, res) {
   const { gameId } = req.query;
 
   try {
-    if (customerId) {
+    if (customerId || gameId) {
       const { rows } = await connection.query(
         `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name As "categoryName" FROM rentals 
           JOIN customers ON customers.id = "customerId" 
           JOIN games ON games.id = "gameId" 
-          JOIN categories ON categories.id = games."categoryId" WHERE "customerId"=$1
+          JOIN categories ON categories.id = games."categoryId" WHERE "customerId" = $1 OR "gameId" = $2
         ;`,
-        [customerId]
-      );
-      const rentals = rows.map((rental) => {
-        const {
-          id,
-          customerId,
-          gameId,
-          rentDate,
-          daysRented,
-          returnDate,
-          originalPrice,
-          delayFee,
-          customer,
-          game,
-          categoryId,
-          categoryName,
-        } = rental;
-
-        return {
-          id,
-          customerId,
-          gameId,
-          rentDate,
-          daysRented,
-          returnDate,
-          originalPrice,
-          delayFee,
-          customer: {
-            id: customerId,
-            name: customer,
-          },
-          game: {
-            id: gameId,
-            name: game,
-            categoryId,
-            categoryName,
-          },
-        };
-      });
-
-      res.send(rentals);
-    } else if (gameId) {
-      const { rows } = await connection.query(
-        `SELECT rentals.*, rentals."rentDate"::text, rentals."returnDate"::text, customers.name AS customer, games.name AS game, categories.id AS "categoryId", categories.name As "categoryName" FROM rentals 
-          JOIN customers ON customers.id = "customerId" 
-          JOIN games ON games.id = "gameId" 
-          JOIN categories ON categories.id = games."categoryId" WHERE "gameId"=$1
-        ;`,
-        [gameId]
+        [customerId, gameId]
       );
       const rentals = rows.map((rental) => {
         const {
