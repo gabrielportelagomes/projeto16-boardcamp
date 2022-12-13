@@ -216,12 +216,22 @@ export async function postRentalReturn(req, res) {
       delayFee = differenceOfDays * pricePerDay;
     }
 
-    console.log(returnDate);
-
     await connection.query(
       `UPDATE rentals SET "returnDate"=$1, "delayFee"=$2 WHERE id=$3`,
       [returnDate, delayFee, id]
     );
+
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export async function deleteRental(req, res) {
+  const { id } = req.params;
+
+  try {
+    await connection.query(`DELETE FROM rentals WHERE id=$1`, [id]);
 
     res.sendStatus(200);
   } catch (err) {

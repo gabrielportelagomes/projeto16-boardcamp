@@ -5,7 +5,9 @@ export async function getCustomers(req, res) {
 
   try {
     if (!cpf) {
-      const { rows } = await connection.query(`SELECT *, birthday::text FROM customers;`);
+      const { rows } = await connection.query(
+        `SELECT *, birthday::text FROM customers;`
+      );
 
       res.send(rows);
     } else {
@@ -33,7 +35,7 @@ export async function getCustomer(req, res) {
       return res.sendStatus(404);
     }
 
-    res.send(rows);
+    res.send(rows[0]);
   } catch (err) {
     res.status(500).send(err.message);
   }

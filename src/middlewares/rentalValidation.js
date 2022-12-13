@@ -27,8 +27,6 @@ export async function rentalValidation(req, res, next) {
       [gameId]
     );
 
-    console.log(rowCount >= gameExists.rows[0].stockTotal)
-
     if (rowCount >= gameExists.rows[0].stockTotal) {
       return res.status(400).send({ message: "Jogo fora de estoque!" });
     }
